@@ -1,6 +1,6 @@
 # Panorama Parking
 
-This repo contains the smart contract for Panorama Parking.
+This repo contains the smart contract for Panorama Parking and is being submitted for Breakout hackathon .
 
 You can look at the tests as examples of how to interact with the program.
 
