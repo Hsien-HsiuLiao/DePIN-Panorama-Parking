@@ -59,6 +59,23 @@ The project consists of three main components:
 - **Car Arrival Feed**: `J748azokS8cKaiGKgN5hsTsTuB1FJ1ikVNXKjq9DQnjg`
 - **Car Departure Feed**: `9jfL52Gmudwee1RK8yuNguoZET7DMDqKSR6DePBJNXot`
 
+## 📊 Architecture Diagram
+
+*Coming Soon: Interactive architecture diagram showing the complete system flow from LoRaWAN sensors to Solana blockchain to React Native app*
+
+## 👥 User Stories
+
+*Coming Soon: Detailed user stories for different user types including parking space owners, renters, and administrators*
+
+## 🎥 Demo Videos
+
+*Coming Soon: Step-by-step demo videos for each user flow including:*
+- *Parking space listing creation*
+- *Space discovery and reservation*
+- *Real-time sensor updates*
+- *Payment processing*
+- *Mobile app usage*
+
 ## 🚀 Getting Started
 
 ### Prerequisites
