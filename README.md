@@ -61,7 +61,11 @@ The project consists of three main components:
 
 ## 📊 Architecture Diagram
 
-*Coming Soon: Interactive architecture diagram showing the complete system flow from LoRaWAN sensors to Solana blockchain to React Native app*
+<div align="center">
+  <img src="protocol-overview.png" alt="Protocol Overview Architecture" width="800">
+</div>
+
+
 
 ## 👥 User Stories
 
