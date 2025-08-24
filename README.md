@@ -55,6 +55,10 @@ The project consists of three main components:
 - Next.js integration for optimal web performance
 
 ### 3. LoRaWAN Sensor Integration
+<div align="center">
+  <img src="lorawan.png" alt="LoRaWAN Sensor Network" width="600">
+</div>
+
 - **Switchboard Feeds**: Real-time sensor data integration
 - **Car Arrival Feed**: `J748azokS8cKaiGKgN5hsTsTuB1FJ1ikVNXKjq9DQnjg`
 - **Car Departure Feed**: `9jfL52Gmudwee1RK8yuNguoZET7DMDqKSR6DePBJNXot`
@@ -79,6 +83,21 @@ The project consists of three main components:
 - *Real-time sensor updates*
 - *Payment processing*
 - *Mobile app usage*
+
+## 🚀 Upcoming Features
+
+### MagicBlock Integration
+*Coming Soon: Integration with [MagicBlock Engine](https://docs.magicblock.gg/pages/get-started/use-cases/depin) for enhanced DePIN capabilities*
+
+**Benefits:**
+- **Real-Time, Low-Cost Transactions** – Eliminates bottlenecks, enabling seamless on-chain infrastructure
+- **Scalable & Efficient** – Optimized for high throughput and low fees, making microtransactions viable
+- **Verifiable & Trustless** – Provides a tamper-proof, open ledger for transparent and decentralized infrastructure
+
+**Addresses Current Limitations:**
+- Solves scalability challenges for high transaction loads
+- Reduces gas fees for IoT integrations and microtransactions
+- Eliminates latency and finality delays for critical real-time applications
 
 ## 🚀 Getting Started
 
