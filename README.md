@@ -1,4 +1,5 @@
-# 🚗 Panorama Parking
+# Panorama Parking
+### depin-parking.vercel.app
 
 <div align="center">
   <img src="PPlogo.png" alt="Panorama Parking Logo" width="200">
@@ -22,12 +23,10 @@ Panorama Parking is a decentralized parking marketplace built on Solana that lev
 ## ✨ Features
 
 - 🏠 **Smart Parking Listings**: Create and manage parking space listings with detailed information
-- 📍 **GPS Integration**: Precise location tracking with latitude/longitude coordinates
-- ⏰ **Real-time Availability**: Dynamic availability windows with start/end timestamps
+- ⏰ **Real-time Availability**: Availability windows with start/end timestamps
 - 🔔 **Multi-channel Notifications**: App, email, and phone notification preferences
-- 💰 **Flexible Pricing**: Set custom rental rates for your parking spaces
 - 📱 **Cross-platform App**: React Native app with web compatibility
-- 🔗 **LoRaWAN Sensor Integration**: Real-time parking status updates via Switchboard feeds
+- 🔗 **LoRaWAN Sensor Integration**: Parking status updates via Switchboard feeds
 - 🚀 **Solana Blockchain**: Fast, low-cost transactions with high throughput
 
 ## 🏗️ Architecture
@@ -36,7 +35,7 @@ The project consists of three main components:
 
 ### 1. Solana Smart Contracts (`anchor-panorama-parking/`)
 - **Program ID**: `FXUQwDsKJNrYFsfiUokPbH4BSrZtoC9m8HpoiMvYxtSE`
-- **Network**: Solana Devnet
+- Solana explorer link
 - **Framework**: Anchor Framework
 
 #### Core Instructions:
@@ -45,7 +44,7 @@ The project consists of three main components:
 - `update_listing`: Modify existing listing details
 - `delete_listing`: Remove parking space listings
 - `set_notification_settings`: Configure user notification preferences
-- `add_feed_to_listing`: Integrate IoT sensor feeds
+- `add_feed_to_listing`: Integrate Lorawan sensor feed
 - `confirm_parking`: Confirm parking space reservations
 - `reserve`: Reserve parking spaces
 
@@ -59,9 +58,11 @@ The project consists of three main components:
   <img src="lorawan.png" alt="LoRaWAN Sensor Network" width="600">
 </div>
 
-- **Switchboard Feeds**: Real-time sensor data integration
+- **Switchboard Feeds**: Oracle integration
 - **Car Arrival Feed**: `J748azokS8cKaiGKgN5hsTsTuB1FJ1ikVNXKjq9DQnjg`
+- sb explorer link
 - **Car Departure Feed**: `9jfL52Gmudwee1RK8yuNguoZET7DMDqKSR6DePBJNXot`
+- sb explorer link
 
 ## 📊 Architecture Diagram
 
@@ -89,15 +90,9 @@ The project consists of three main components:
 ### MagicBlock Integration
 *Coming Soon: Integration with [MagicBlock Engine](https://docs.magicblock.gg/pages/get-started/use-cases/depin) for enhanced DePIN capabilities*
 
-**Benefits:**
-- **Real-Time, Low-Cost Transactions** – Eliminates bottlenecks, enabling seamless on-chain infrastructure
-- **Scalable & Efficient** – Optimized for high throughput and low fees, making microtransactions viable
-- **Verifiable & Trustless** – Provides a tamper-proof, open ledger for transparent and decentralized infrastructure
 
-**Addresses Current Limitations:**
-- Solves scalability challenges for high transaction loads
-- Reduces gas fees for IoT integrations and microtransactions
-- Eliminates latency and finality delays for critical real-time applications
+
+
 
 ## 🚀 Getting Started
 
@@ -111,7 +106,7 @@ The project consists of three main components:
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/your-username/DePIN-Panorama-Parking.git
+   git clone https://github.com/hsien-hsiuliao/DePIN-Panorama-Parking.git
    cd DePIN-Panorama-Parking
    ```
 
@@ -119,27 +114,15 @@ The project consists of three main components:
    ```bash
    # Install Anchor program dependencies
    cd anchor-panorama-parking
-   cargo build
+   anchor build
    
    # Install React Native app dependencies
    cd ../panorama-parking-react-native-web
    yarn install
    ```
 
-3. **Configure Solana**
-   ```bash
-   solana config set --url devnet
-   solana airdrop 2
-   ```
 
-4. **Deploy the smart contract**
-   ```bash
-   cd ../anchor-panorama-parking
-   anchor build
-   anchor deploy
-   ```
-
-5. **Run the application**
+3. **Run the application**
    ```bash
    cd ../panorama-parking-react-native-web
    yarn dev
@@ -150,9 +133,8 @@ The project consists of three main components:
 ### Smart Contract Development
 ```bash
 cd anchor-panorama-parking
-anchor test
 anchor build
-anchor deploy
+anchor test
 ```
 
 ### Frontend Development
@@ -192,10 +174,6 @@ The test suite includes examples of:
 
 
 
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
 ## 🏆 Hackathon Submissions
 
 This project was developed for multiple hackathons and demonstrates innovative use of:
@@ -209,13 +187,13 @@ This project was developed for multiple hackathons and demonstrates innovative u
 - **Focus**: Smart contract development and DePIN infrastructure
 
 ### Solana Mobile Hackathon
-- **Event**: First Ever Solana Mobile Hackathon
+- **Event**: Solana Mobile Hackathon
 - **Focus**: Mobile-first blockchain applications and Solana Mobile Stack integration
 
 
 ---
 
 <div align="center">
-  <p><strong>Built with ❤️ on Solana</strong></p>
-  <p><em>Revolutionizing parking, one space at a time</em></p>
+  <p><strong>Developed during Turbin3 Builders program</strong></p>
+  <p><em>2025</em></p>
 </div>
