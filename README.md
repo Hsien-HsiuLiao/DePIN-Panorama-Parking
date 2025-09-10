@@ -1,5 +1,5 @@
 # Panorama Parking
-### depin-parking.vercel.app
+### [Web app](https://depin-parking.vercel.app)
 
 <div align="center">
   <img src="PPlogo.png" alt="Panorama Parking Logo" width="200">
@@ -35,8 +35,9 @@ The project consists of three main components:
 
 ### 1. Solana Smart Contracts (`anchor-panorama-parking/`)
 - **Program ID**: `FXUQwDsKJNrYFsfiUokPbH4BSrZtoC9m8HpoiMvYxtSE`
-- Solana explorer link
+- https://explorer.solana.com/address/FXUQwDsKJNrYFsfiUokPbH4BSrZtoC9m8HpoiMvYxtSE?cluster=devnet
 - **Framework**: Anchor Framework
+- **IDL**: https://explorer.solana.com/address/FXUQwDsKJNrYFsfiUokPbH4BSrZtoC9m8HpoiMvYxtSE/idl?cluster=devnet
 
 #### Core Instructions:
 - `initialize`: Initialize the marketplace with name and fee structure
@@ -48,7 +49,7 @@ The project consists of three main components:
 - `confirm_parking`: Confirm parking space reservations
 - `reserve`: Reserve parking spaces
 
-### 2. React Native Web App (`panorama-parking-react-native-web/`)
+### 2. React Native Web App (`panorama-parking-react-native-web/`) (coming soon)
 - Cross-platform mobile and web application
 - Built with React Native Web for universal compatibility
 - Next.js integration for optimal web performance
@@ -58,11 +59,14 @@ The project consists of three main components:
   <img src="lorawan.png" alt="LoRaWAN Sensor Network" width="600">
 </div>
 
+- Dragino DS20L sensor
+- https://www.meteoscientific.com/docs/tutorial-basics/LoRaWAN-Big-Picture
 - **Switchboard Feeds**: Oracle integration
-- **Car Arrival Feed**: `J748azokS8cKaiGKgN5hsTsTuB1FJ1ikVNXKjq9DQnjg`
-- sb explorer link
-- **Car Departure Feed**: `9jfL52Gmudwee1RK8yuNguoZET7DMDqKSR6DePBJNXot`
-- sb explorer link
+- https://docs.switchboard.xyz/product-documentation/data-feeds
+- **Mock Car Arrival Feed**: `J748azokS8cKaiGKgN5hsTsTuB1FJ1ikVNXKjq9DQnjg`
+- https://ondemand.switchboard.xyz/solana/devnet/feed/J748azokS8cKaiGKgN5hsTsTuB1FJ1ikVNXKjq9DQnjg
+- **Mock Car Departure Feed**: `9jfL52Gmudwee1RK8yuNguoZET7DMDqKSR6DePBJNXot`
+- https://ondemand.switchboard.xyz/solana/devnet/feed/9jfL52Gmudwee1RK8yuNguoZET7DMDqKSR6DePBJNXot
 
 ## 📊 Architecture Diagram
 
@@ -97,8 +101,10 @@ The project consists of three main components:
 ## 🚀 Getting Started
 
 ### Prerequisites
-- Node.js (v16 or higher)
-- Rust and Cargo
+- https://solana.com/docs/intro/installation
+- Node.js 
+- Yarn
+- Rust
 - Solana CLI tools
 - Anchor Framework
 
@@ -152,10 +158,7 @@ yarn start           # Production server
   <p><em>Scan to download the Android APK</em></p>
 </div>
 
-## 🌐 Live Demo
 
-- **Smart Contract Explorer**: [View on Solana Explorer](https://explorer.solana.com/address/FXUQwDsKJNrYFsfiUokPbH4BSrZtoC9m8HpoiMvYxtSE?cluster=devnet)
-- **Program IDL**: [Anchor Program Interface](https://explorer.solana.com/address/FXUQwDsKJNrYFsfiUokPbH4BSrZtoC9m8HpoiMvYxtSE/anchor-program?cluster=devnet)
 
 ## 🧪 Testing
 
@@ -176,24 +179,20 @@ The test suite includes examples of:
 
 ## 🏆 Hackathon Submissions
 
-This project was developed for multiple hackathons and demonstrates innovative use of:
-- Solana blockchain technology
-- DePIN (Decentralized Physical Infrastructure Networks)
-- LoRaWAN sensor integration
-- Cross-platform mobile development
+
 
 ### Breakout Hackathon
-- **Event**: Breakout Hackathon
-- **Focus**: Smart contract development and DePIN infrastructure
+- **Event**: https://www.colosseum.com/breakout
+- **Focus**: DePIN 
 
 ### Solana Mobile Hackathon
-- **Event**: Solana Mobile Hackathon
+- **Event**: https://solanamobile.radiant.nexus/
 - **Focus**: Mobile-first blockchain applications and Solana Mobile Stack integration
 
 
 ---
 
 <div align="center">
-  <p><strong>Developed during Turbin3 Builders program</strong></p>
+  <p><strong>Developed during <a href=https://www.turbin3.org/>Turbin3</a> Builders programs</strong></p>
   <p><em>2025</em></p>
 </div>
