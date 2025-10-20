@@ -54,7 +54,8 @@ The project consists of three main components:
 - Built with React Native Web for universal compatibility
 - Next.js integration for optimal web performance
 
-### 3. LoRaWAN Sensor Integration
+### 3. Sensor Integrations
+#### LoRaWAN 
 <div align="center">
   <img src="lorawan.png" alt="LoRaWAN Sensor Network" width="600">
 </div>
@@ -67,6 +68,14 @@ The project consists of three main components:
 - https://ondemand.switchboard.xyz/solana/devnet/feed/J748azokS8cKaiGKgN5hsTsTuB1FJ1ikVNXKjq9DQnjg
 - **Mock Car Departure Feed**: `9jfL52Gmudwee1RK8yuNguoZET7DMDqKSR6DePBJNXot`
 - https://ondemand.switchboard.xyz/solana/devnet/feed/9jfL52Gmudwee1RK8yuNguoZET7DMDqKSR6DePBJNXot
+
+#### ESP32 w/ proximity sensor (in development)
+
+#### Raspberry Pi 5 (in development)
+- YOLO software for AI object detection
+- can detect if car leaves and arrives
+
+
 
 ## 📊 Architecture Diagram
 
@@ -94,6 +103,16 @@ The project consists of three main components:
 ### MagicBlock Integration
 *Coming Soon: Integration with [MagicBlock Engine](https://docs.magicblock.gg/pages/get-started/use-cases/depin) for enhanced DePIN capabilities*
 
+
+### Governance
+
+### Data Management/Storage
+
+### Hardware security
+
+### Token Rewards/Distribution
+
+### Testing frameworks
 
 
 
