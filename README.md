@@ -107,6 +107,14 @@ The project consists of three main components:
 ### Governance
 
 ### Data Management/Storage
+- https://www.termina.technology/post/comparing-on-chain-proof-storage-options-for-depin
+- "Why Proof Storage Matters
+
+  The question of on-chain versus off-chain proof storage is ultimately about trust, how it is established, maintained, and transferred between different stakeholders.
+
+  In data-centric DePINs, trust must be projected outward to enterprise customers, auditors, or regulators who did not directly witness the activity that generated value. These stakeholders rely on immutable, independently verifiable records to confirm that claims are legitimate and untampered. On-chain proofs provide exactly this: a transparent, lasting audit trail that anyone can check, now or years into the future.
+
+  In contrast, service-focused DePINs provide live access to resources such as computation or bandwidth, where users themselves experience and verify the outcome in real time."
 
 ### Hardware security
 
