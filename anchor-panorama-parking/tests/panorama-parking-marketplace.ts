@@ -11,30 +11,30 @@ import {
   Connection
 } from "@solana/web3.js";
 
-import * as sb from "@switchboard-xyz/on-demand";
+//import * as sb from "@switchboard-xyz/on-demand";
 import { assert } from "chai";
-import homeowner1wallet from "../homeowner1-wallet.json";
-import homeowner2wallet from "../homeowner2-wallet.json";
-import driverwallet from "../driver-wallet.json";
+//wallet for testing on devnet
+import homeowner1wallet from "../homeowner1-wallet.json" with { type: "json" };
+import homeowner2wallet from "../homeowner2-wallet.json" with { type: "json" };
+import driverwallet from "../driver-wallet.json" with { type: "json" };
 
-import wallet from "../HTurbin3-wallet.json";
+import wallet from "../HTurbin3-wallet.json" with { type: "json" };
 
 
 describe("DePIN parking space marketplace", () => {
-  // Configure the client to use the local cluster.
   anchor.setProvider(anchor.AnchorProvider.env());
 
   const provider = anchor.getProvider();
 
- // const connection = provider.connection;
+  // const connection = provider.connection;
   const commitment: Commitment = "confirmed";
 
-  const connection = new Connection("https://turbine-solanad-4cde.devnet.rpcpool.com/168dd64f-ce5e-4e19-a836-f6482ad6b396", commitment); 
-//  const connection = new Connection("https://turbine-solanad-43ad.devnet.rpcpool.com/abdbf6bf-acc3-49e8-8075-4422a5789e87", commitment); 
-
-//new
-//turbine-solanad-43ad
-//abdbf6bf-acc3-49e8-8075-4422a5789e87
+  // const connection = new Connection("https://turbine-solanad-4cde.devnet.rpcpool.com/168dd64f-ce5e-4e19-a836-f6482ad6b396", commitment); 
+  // const connection = new Connection("https://turbine-solanad-43ad.devnet.rpcpool.com/abdbf6bf-acc3-49e8-8075-4422a5789e87", commitment); 
+  const connection = new Connection("http://localhost:8899", commitment);
+  //new
+  //turbine-solanad-43ad
+  //abdbf6bf-acc3-49e8-8075-4422a5789e87
 
   const program = anchor.workspace.marketplace as Program<Marketplace>;
   const programId = program.programId;
@@ -56,25 +56,20 @@ describe("DePIN parking space marketplace", () => {
     return signature;
   };
 
-  //get/find accounts
+  // get/find accounts
   // homeowners provide parking space, drivers reserve the space
- /*  const [, homeowner3, ] = Array.from({ length: 4 }, () =>
-    Keypair.generate()
-  ); */
+  /*  const [, homeowner3, ] = Array.from({ length: 4 }, () =>
+     Keypair.generate()
+   ); */
   const admin = Keypair.fromSecretKey(new Uint8Array(wallet)); //("Coop1aAuEqbN3Pm9TzohXvS3kM4zpp3pJZ9D4M2uWXH2");
-
   const homeowner1 = Keypair.fromSecretKey(new Uint8Array(homeowner1wallet)); //DmipzvprT5w4sYLVLARzUuxazAMUqm1iUbJZ88Yk58XS
-
   const homeowner2 = Keypair.fromSecretKey(new Uint8Array(homeowner2wallet)); //Av2tsxqpU6LC5vr5gccQyx8rVR9gfcEEvxPxVtd7Z3qc
-
   const driver = Keypair.fromSecretKey(new Uint8Array(driverwallet)); //8wbbE8vUPfuR16nZ6YcBsggZuSMVrFvKQr7fbXuZjWz
-  //console.log(`publickey: ${admin.publicKey} `);
 
   const marketplace_name = "DePIN PANORAMA PARKING";
 
   let marketplace: PublicKey;
   let marketplaceBump;
-
 
   [marketplace, marketplaceBump] = PublicKey.findProgramAddressSync(
     [Buffer.from("marketplace"), Buffer.from(marketplace_name)],
@@ -90,33 +85,45 @@ describe("DePIN parking space marketplace", () => {
  */
 
   it("Airdrop", async () => {
-    /* const homeowner1Tx = await connection.requestAirdrop(homeowner1.publicKey, 2 * LAMPORTS_PER_SOL);
-    const homeowner2Tx = await connection.requestAirdrop(homeowner2.publicKey, 2 * LAMPORTS_PER_SOL);
-    const homeowner3Tx = await connection.requestAirdrop(homeowner3.publicKey, 2 * LAMPORTS_PER_SOL);
+    console.log("RPC Connection: ", anchor.getProvider().connection.rpcEndpoint);
+    const commitment: Commitment = "confirmed";
 
-    const driverTx = await connection.requestAirdrop(driver.publicKey, 2 * LAMPORTS_PER_SOL);
-    const adminTX = await connection.requestAirdrop(admin.publicKey, 2 * LAMPORTS_PER_SOL);
+    const confirmAirdropTx = async (signature: string) => {
+      const latestBlockhash = await anchor.getProvider().connection.getLatestBlockhash();
+      await anchor.getProvider().connection.confirmTransaction(
+        {
+          signature,
+          ...latestBlockhash,
+        },
+        commitment
+      )
+    }
 
-    // confirm the airdrop transactions
-    await connection.confirmTransaction(homeowner1Tx);
-    await connection.confirmTransaction(homeowner2Tx);
-    await connection.confirmTransaction(homeowner3Tx);
+    await anchor.getProvider().connection.requestAirdrop(homeowner1.publicKey, 2 * anchor.web3.LAMPORTS_PER_SOL)
+      .then(confirmAirdropTx);
 
-    await connection.confirmTransaction(driverTx);
-    await connection.confirmTransaction(adminTX); */
+    await anchor.getProvider().connection.requestAirdrop(homeowner2.publicKey, 2 * anchor.web3.LAMPORTS_PER_SOL)
+      .then(confirmAirdropTx);
+
+    await anchor.getProvider().connection.requestAirdrop(driver.publicKey, 2 * anchor.web3.LAMPORTS_PER_SOL)
+      .then(confirmAirdropTx);
+
+    await anchor.getProvider().connection.requestAirdrop(admin.publicKey, 2 * anchor.web3.LAMPORTS_PER_SOL)
+      .then(confirmAirdropTx);
+
+    console.log("Airdrop success");
+   
 
     // Log the balance of each keypair
-   // const balance1 = await connection.getBalance(homeowner1.publicKey);
-    //  console.log(`Balance for maker/homeowner1: ${homeowner1.publicKey} ${balance1 / LAMPORTS_PER_SOL} SOL`);
-      const balance1 = await connection.getBalance(homeowner1.publicKey);
-      console.log(`Balance for maker/homeowner1: ${homeowner1.publicKey} ${balance1 / LAMPORTS_PER_SOL} SOL`);
+    const balance1 = await connection.getBalance(homeowner1.publicKey);
+    console.log(`Balance for maker/homeowner1: ${homeowner1.publicKey} ${balance1 / LAMPORTS_PER_SOL} SOL`);
 
     const balance2 = await connection.getBalance(driver.publicKey);
 
   });
 
 
-  xit("Is initialized!", async () => {
+  it("Is initialized!", async () => {
     const rental_fee = 0.015 * LAMPORTS_PER_SOL;
 
     const tx = await program.methods
@@ -125,14 +132,14 @@ describe("DePIN parking space marketplace", () => {
         admin: admin.publicKey,
         marketplace: marketplace,
       })
-      .signers([])//admin
+      .signers([admin])
       .rpc()
       .then(confirm)
       .then(log);
     console.log("Your transaction signature", tx);
   });
 
-  it("Create new listings for parking space rental", async () => {
+  it("Homeowner1 and homeowner2 create new listings for parking space rental", async () => {
     let email = "homeowner1@email.com";
     let phone = "555-555-6309"
     let address = "1234 MyStreet, Los Angeles, CA 90210";
@@ -289,7 +296,7 @@ describe("DePIN parking space marketplace", () => {
     // Fetch the notification settings account to verify the changes
     const notificationAccount = await program.account.notificationSettings.fetch(notification);
 
-  //  console.log(notificationAccount);
+    //  console.log(notificationAccount);
 
     assert.isTrue(notificationAccount.app);
     assert.isFalse(notificationAccount.email);
@@ -316,9 +323,9 @@ describe("DePIN parking space marketplace", () => {
     let latitude;
     let longitude;
     [latitude, longitude] = [34.2273574, -118.4500036];
-   
 
-    
+
+
     //have different homeowner or driver try to changes
     const listing = PublicKey.findProgramAddressSync(
       [marketplace.toBuffer(), homeowner1.publicKey.toBuffer()],
@@ -331,7 +338,7 @@ describe("DePIN parking space marketplace", () => {
       await program.methods
         .updateListing(address, newRentalRate, sensorId, latitude, longitude, additional_info, availabilty_start, availabilty_end, email, phone)
         .accountsPartial({
-          maker: homeowner1.publicKey, 
+          maker: homeowner1.publicKey,
           marketplace: marketplace,
           listing: listing,
           owner: homeowner2.publicKey // Unauthorized user homeowner2
@@ -387,11 +394,11 @@ describe("DePIN parking space marketplace", () => {
 
     // Filter listings based on distance and rental rate
     const filteredListings = listings.filter(listing => {
-    //  console.log("address", listing.account.address);
+      //  console.log("address", listing.account.address);
       const listingLatitude = listing.account.latitude; // Assuming latitude is stored as a number
       const listingLongitude = listing.account.longitude; // Assuming longitude is stored as a number
       const distance = calculateDistance(dest_latitude, dest_longitude, listingLatitude, listingLongitude);
-    //  console.log("distance:", distance);
+      //  console.log("distance:", distance);
       // Check if the listing is within the max distance and meets rental rate criteria
       const isWithinDistance = distance <= maxDistance;
       const isRentalRateAcceptable = listing.account.rentalRate <= desired_rental_rate;
@@ -414,7 +421,7 @@ describe("DePIN parking space marketplace", () => {
     )[0];
 
     const listingAccountInfo = await connection.getAccountInfo(listing);
-   // console.log('Account data:', listingAccountInfo.data.toString());
+    // console.log('Account data:', listingAccountInfo.data.toString());
 
 
     // duration 15min
@@ -445,85 +452,85 @@ describe("DePIN parking space marketplace", () => {
   }); */
 
 
-  it("Call switchboard feed and program ix", async () => {
-
-    const listing = PublicKey.findProgramAddressSync(
-      [marketplace.toBuffer(), homeowner1.publicKey.toBuffer()],
-      programId
-    )[0];
-
-    const myProgram = anchor.workspace.marketplace as Program<Marketplace>;
-    const listingAccount = await myProgram.account.listing.fetch(listing);
-    const feed = listingAccount.feed;
-    //const feed = new PublicKey("43qXTGQdvEiPYj9GQvDfvQi7Shx8ahSd3d2sYBeEizuR"); //driver leaves
-    //const feed = new PublicKey("9jfL52Gmudwee1RK8yuNguoZET7DMDqKSR6DePBJNXot");
-
-
-    const { keypair, connection, program } = await sb.AnchorUtils.loadEnv();
-
-    // console.log("connection", connection);
-    const sbProgram = program;
-    //  console.log("program from sb.anchorutils", sbProgram);
-    //const feed = new PublicKey("J748azokS8cKaiGKgN5hsTsTuB1FJ1ikVNXKjq9DQnjg");
-    const feedAccountInfo = await connection.getAccountInfo(feed);
-    //console.log("feedAccountInfo", feedAccountInfo);
-    //console.log("feedAccountInfo", feedAccountInfo.data.toString());
-
-
-    const feedAccount = new sb.PullFeed(sbProgram!, feed);
-    await feedAccount.preHeatLuts();
-
-
-
-
-
-    const [pullIx, responses, _ok, luts] = await feedAccount.fetchUpdateIx({
-      numSignatures: 3,
-    });
-    // Instruction to  program using the switchboard feed
-    const myIx = await myProgram!.methods
-      .sensorChange()
-      .accountsPartial({
-        feed, //account name must match
-        marketplace: marketplace,
-        maker: homeowner1.publicKey,
-        listing: listing,
-     //   renter: driver.publicKey,
-      //  systemProgram: SystemProgram.programId,
-
-      })
-      .signers([homeowner1])
-      .rpc()
-      .then(confirm)
-      .then(log);
-
-
-    const tx = await sb.asV0Tx({
-      connection,
-      ixs: [...pullIx!, /* myIx */],
-      signers: [keypair],
-      computeUnitPrice: 200_000,
-      computeUnitLimitMultiple: 1.3,
-      lookupTables: luts,
-    });
-
-    const TX_CONFIG = {
-      commitment: "processed" as Commitment,
-      skipPreflight: true,
-      maxRetries: 0,
-    };
-    console.log("simulating..");
-    const sim = await connection.simulateTransaction(tx, TX_CONFIG);
-    const updateEvent = new sb.PullFeedValueEvent(
-      sb.AnchorUtils.loggedEvents(sbProgram!, sim.value.logs!)[0]
-    ).toRows();
-    //  console.log("Simulated Price Updates:\n", JSON.stringify(sim.value.logs));
-    //console.log("Submitted Price Updates:\n", updateEvent);
-
-    console.log("feed value from oracle: ", updateEvent[0].value);
-
-    console.log(`Transaction sent: ${await connection.sendTransaction(tx)}`);
-  });
+  /*  it("Call switchboard feed and program ix", async () => {
+ 
+     const listing = PublicKey.findProgramAddressSync(
+       [marketplace.toBuffer(), homeowner1.publicKey.toBuffer()],
+       programId
+     )[0];
+ 
+     const myProgram = anchor.workspace.marketplace as Program<Marketplace>;
+     const listingAccount = await myProgram.account.listing.fetch(listing);
+     const feed = listingAccount.feed;
+     //const feed = new PublicKey("43qXTGQdvEiPYj9GQvDfvQi7Shx8ahSd3d2sYBeEizuR"); //driver leaves
+     //const feed = new PublicKey("9jfL52Gmudwee1RK8yuNguoZET7DMDqKSR6DePBJNXot");
+ 
+ 
+     const { keypair, connection, program } = await sb.AnchorUtils.loadEnv();
+ 
+     // console.log("connection", connection);
+     const sbProgram = program;
+     //  console.log("program from sb.anchorutils", sbProgram);
+     //const feed = new PublicKey("J748azokS8cKaiGKgN5hsTsTuB1FJ1ikVNXKjq9DQnjg");
+     const feedAccountInfo = await connection.getAccountInfo(feed);
+     //console.log("feedAccountInfo", feedAccountInfo);
+     //console.log("feedAccountInfo", feedAccountInfo.data.toString());
+ 
+ 
+     const feedAccount = new sb.PullFeed(sbProgram!, feed);
+     await feedAccount.preHeatLuts();
+ 
+ 
+ 
+ 
+ 
+     const [pullIx, responses, _ok, luts] = await feedAccount.fetchUpdateIx({
+       numSignatures: 3,
+     });
+     // Instruction to  program using the switchboard feed
+     const myIx = await myProgram!.methods
+       .sensorChange()
+       .accountsPartial({
+         feed, //account name must match
+         marketplace: marketplace,
+         maker: homeowner1.publicKey,
+         listing: listing,
+      //   renter: driver.publicKey,
+       //  systemProgram: SystemProgram.programId,
+ 
+       })
+       .signers([homeowner1])
+       .rpc()
+       .then(confirm)
+       .then(log);
+ 
+ 
+     const tx = await sb.asV0Tx({
+       connection,
+       ixs: [...pullIx!,   ],//myIx
+       signers: [keypair],
+       computeUnitPrice: 200_000,
+       computeUnitLimitMultiple: 1.3,
+       lookupTables: luts,
+     });
+ 
+     const TX_CONFIG = {
+       commitment: "processed" as Commitment,
+       skipPreflight: true,
+       maxRetries: 0,
+     };
+     console.log("simulating..");
+     const sim = await connection.simulateTransaction(tx, TX_CONFIG);
+     const updateEvent = new sb.PullFeedValueEvent(
+       sb.AnchorUtils.loggedEvents(sbProgram!, sim.value.logs!)[0]
+     ).toRows();
+     //  console.log("Simulated Price Updates:\n", JSON.stringify(sim.value.logs));
+     //console.log("Submitted Price Updates:\n", updateEvent);
+ 
+     console.log("feed value from oracle: ", updateEvent[0].value);
+ 
+     console.log(`Transaction sent: ${await connection.sendTransaction(tx)}`);
+   }); */
 
   //driver confirms arrival by scanning QR code connected to b link
   it("Driver confirms arrival by scanning QR code", async () => {
@@ -538,7 +545,7 @@ describe("DePIN parking space marketplace", () => {
 
     // Listen for the ParkingConfirmed event
     const eventListener = program.addEventListener("parkingConfirmed", (event) => {
-     // console.log("Parking confirmed event received:", event);
+      // console.log("Parking confirmed event received:", event);
       assert.equal(event.listingId.toString(), listing.toString(), "Listing ID should match");
       assert.equal(event.sensorId, sensorId, "Sensor ID should match the one used in the transaction");
 
@@ -567,7 +574,7 @@ describe("DePIN parking space marketplace", () => {
     // Fetch the listing to verify the parking status
     const listingAccount = await program.account.listing.fetch(listing);
 
-   // console.log("listingAccount.parkingSpaceStatus", listingAccount.parkingSpaceStatus);
+    // console.log("listingAccount.parkingSpaceStatus", listingAccount.parkingSpaceStatus);
 
     assert.equal(Object.keys(listingAccount.parkingSpaceStatus)[0], "occupied", "Parking space status should be Occupied");
 
@@ -604,7 +611,7 @@ describe("DePIN parking space marketplace", () => {
   //driver leaves late and is charged penalty
 
 
-  it("Driver  leaves on time", async () => {
+  xit("Driver  leaves on time", async () => {
     //function running on a server is monitring sensor data and calls solana program when there is a change
     // Instruction to  program using the switchboard feed
     const myProgram = anchor.workspace.marketplace as Program<Marketplace>;
@@ -615,8 +622,8 @@ describe("DePIN parking space marketplace", () => {
     )[0];
 
     //#mock data feed driver leaves 
-   const feed = new PublicKey("9jfL52Gmudwee1RK8yuNguoZET7DMDqKSR6DePBJNXot");
-   //  const feed = new PublicKey("43qXTGQdvEiPYj9GQvDfvQi7Shx8ahSd3d2sYBeEizuR"); //no longer works since api data changed
+    const feed = new PublicKey("9jfL52Gmudwee1RK8yuNguoZET7DMDqKSR6DePBJNXot");
+    //  const feed = new PublicKey("43qXTGQdvEiPYj9GQvDfvQi7Shx8ahSd3d2sYBeEizuR"); //no longer works since api data changed
     /* try {
       // Fetch the account info
       const provConnection = provider.connection;
@@ -627,24 +634,24 @@ describe("DePIN parking space marketplace", () => {
         console.log("Account not found");
         return;
       } */
-  
-      // Display the account data in a readable format
+
+    // Display the account data in a readable format
     /*   console.log("Account Data:");
      /*  console.log("Lamports:", accountInfo.lamports);
       console.log("Owner:", accountInfo.owner.toBase58()); */
     /*   console.log("Data Length:", accountInfo.data.length);
       console.log("Data (Base64):", accountInfo.data.toString('base64'));
       console.log("Data (Hex):", accountInfo.data.toString('hex')); */
-   /*  } catch (error) {
-      console.error("Error fetching account data:", error);
-    } */ 
-     
+    /*  } catch (error) {
+       console.error("Error fetching account data:", error);
+     } */
+
 
     const { keypair, connection, program } = await sb.AnchorUtils.loadEnv();
 
     const feedAccountInfo = await connection.getAccountInfo(feed);
-   // console.log("feedAccountInfo", feedAccountInfo.data.toString());
-    
+    // console.log("feedAccountInfo", feedAccountInfo.data.toString());
+
 
     const sbProgram = program;
 
@@ -680,33 +687,33 @@ describe("DePIN parking space marketplace", () => {
   });
 
   it("delete listing", async () => {
-  await program.methods
-  .deleteListing()
-  .accountsPartial({
-    maker: homeowner1.publicKey, //
-    marketplace: marketplace,
-   // listing: listing,
-    owner: homeowner1.publicKey //
-  })
-  .signers([homeowner1])//
-  .rpc()
-  .then(confirm)
-  .then(log);
+    await program.methods
+      .deleteListing()
+      .accountsPartial({
+        maker: homeowner1.publicKey, //
+        marketplace: marketplace,
+        // listing: listing,
+        owner: homeowner1.publicKey //
+      })
+      .signers([homeowner1])//
+      .rpc()
+      .then(confirm)
+      .then(log);
 
-  await program.methods
-  .deleteListing()
-  .accountsPartial({
-    maker: homeowner2.publicKey, //
-    marketplace: marketplace,
-   // listing: listing,
-    owner: homeowner2.publicKey //
-  })
-  .signers([homeowner2])//
-  .rpc()
-  .then(confirm)
-  .then(log);
+    await program.methods
+      .deleteListing()
+      .accountsPartial({
+        maker: homeowner2.publicKey, //
+        marketplace: marketplace,
+        // listing: listing,
+        owner: homeowner2.publicKey //
+      })
+      .signers([homeowner2])//
+      .rpc()
+      .then(confirm)
+      .then(log);
 
-});
+  });
 
 
 
