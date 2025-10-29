@@ -7,7 +7,7 @@ pub mod set_notification;
 pub mod add_feed;
 pub mod confirm_parking;
 pub mod delete_listing;
-
+pub mod update_reservation;
 
 pub use initialize::*;
 pub use list::*;
@@ -18,3 +18,4 @@ pub use set_notification::*;
 pub use add_feed::*;
 pub use confirm_parking::*;
 pub use delete_listing::*;
+pub use update_reservation::*;
