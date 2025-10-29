@@ -52,8 +52,9 @@ impl <'info> SwitchboardFeed<'info> {
 
        // Docs at: https://switchboard-on-demand-rust-docs.web.app/on_demand/accounts/pull_feed/struct.PullFeedAccountData.html
        let feed = PullFeedAccountData::parse(feed_account).unwrap();
-      
-       msg!("sensor data, distance_in_cm: {:?}", feed.value().unwrap());
+       let clock = Clock::get()?.slot;
+
+       msg!("sensor data, distance_in_cm: {:?}", feed.value(clock).unwrap());
        //distance < 30 cm, car parked, >30cm car left space
 
        //when driver leaves, sensor detects change. a server function monitoring for changes (or anchor test) will
@@ -62,7 +63,7 @@ impl <'info> SwitchboardFeed<'info> {
        //user story 1c
    //driver receives confirmation
 
-   let distance= feed.value().unwrap();
+   let distance= feed.value(clock).unwrap();
 
    // Check if the distance indicates the car has left the space
    if distance > Decimal::from(30) {

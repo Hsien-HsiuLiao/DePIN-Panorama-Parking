@@ -451,7 +451,75 @@ describe("DePIN parking space marketplace", () => {
 
   }); */
 
+  it("Call sensor_change ix with feed to read sensor value", async () => {
+/*
+**Mock Car Arrival Feed**: `J748azokS8cKaiGKgN5hsTsTuB1FJ1ikVNXKjq9DQnjg`
+- https://ondemand.switchboard.xyz/solana/devnet/feed/J748azokS8cKaiGKgN5hsTsTuB1FJ1ikVNXKjq9DQnjg
+- **Mock Car Departure Feed**: `9jfL52Gmudwee1RK8yuNguoZET7DMDqKSR6DePBJNXot`
+- https://ondemand.switchboard.xyz/solana/devnet/feed/9jfL52Gmudwee1RK8yuNguoZET7DMDqKSR6DePBJNXot
+*/
 
+    const listing = PublicKey.findProgramAddressSync(
+      [marketplace.toBuffer(), homeowner1.publicKey.toBuffer()],
+      program.programId
+    )[0];
+    
+    const feed = new PublicKey("J748azokS8cKaiGKgN5hsTsTuB1FJ1ikVNXKjq9DQnjg");
+
+    /* // Load Switchboard environment to crank the feed
+    const { keypair: sbKeypair, connection: sbConnection, program: sbProgram } = await sb.AnchorUtils.loadEnv();
+    
+    // Create a PullFeed instance and warm up lookup tables
+    const feedAccount = new sb.PullFeed(sbProgram!, feed);
+    await feedAccount.preHeatLuts();
+
+    // Step 1: Fetch update instructions to crank the feed with fresh data
+    const [pullIx, responses, _ok, luts] = await feedAccount.fetchUpdateIx({
+      numSignatures: 3,
+    });
+
+    // Step 2: Send the crank transaction to update the feed
+    const crankTx = await sb.asV0Tx({
+      connection: sbConnection,
+      ixs: [...pullIx!],
+      signers: [sbKeypair],
+      computeUnitPrice: 200_000,
+      computeUnitLimitMultiple: 1.3,
+      lookupTables: luts,
+    });
+
+    const TX_CONFIG = {
+      commitment: "confirmed" as Commitment,
+      skipPreflight: true,
+      maxRetries: 3,
+    };
+
+    // Send and confirm the crank transaction
+    const crankSignature = await sbConnection.sendTransaction(crankTx, TX_CONFIG);
+    const crankBlockhash = await sbConnection.getLatestBlockhash();
+    await sbConnection.confirmTransaction({
+      signature: crankSignature,
+      ...crankBlockhash,
+    });
+    console.log("Feed cranked successfully. Crank signature:", crankSignature);
+ */
+    // Step 3: Now that the feed is updated, call sensorChange() to read from it
+    const tx = await program.methods.sensorChange()
+      .accountsPartial({
+        feed: feed,
+        marketplace: marketplace,
+        maker: homeowner1.publicKey,
+        listing: listing,
+        renter: driver.publicKey,
+      })
+      .signers([homeowner1, driver])
+      .rpc()
+      .then(confirm)
+      .then(log);
+
+    console.log("\nFeed submitted!");
+    console.log("Your transaction signature", tx);
+  });
   /*  it("Call switchboard feed and program ix", async () => {
  
      const listing = PublicKey.findProgramAddressSync(
