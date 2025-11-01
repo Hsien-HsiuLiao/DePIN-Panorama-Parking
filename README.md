@@ -121,6 +121,10 @@ The project consists of three main components:
 ### Token Rewards/Distribution
 
 ### Testing frameworks
+- Trident (fuzzing) usetrident.xyz 
+
+### Solana security
+- https://github.com/0xMacro/awesome-solana-security
 
 
 
