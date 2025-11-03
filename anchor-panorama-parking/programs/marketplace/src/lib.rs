@@ -13,7 +13,7 @@ pub use error::ErrorCode;
 use instructions::*;
 //use crate::instruction::*;
 
-declare_id!("FXUQwDsKJNrYFsfiUokPbH4BSrZtoC9m8HpoiMvYxtSE");
+declare_id!("8YBQFTcbnEqmqaLun6PSUYGYmSJj1o1kw3hPwHZhPJxV");
 
 #[program]
 pub mod marketplace {
@@ -109,6 +109,12 @@ pub mod marketplace {
     pub fn sensor_change<'a>(ctx: Context<SwitchboardFeed>) -> Result<()> {
         //when driver arrives or leaves
         ctx.accounts.sensor_change()?;
+        Ok(())
+    }
+
+    //use updated switchboard implementation to read oracle data
+    pub fn read_oracle_data(ctx: Context<ReadOracleData>) -> Result<()> {
+        ctx.accounts.read_oracle_data()?;
         Ok(())
     }
 
