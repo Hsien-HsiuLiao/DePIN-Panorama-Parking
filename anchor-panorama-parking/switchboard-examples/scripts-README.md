@@ -54,6 +54,12 @@ bun run examples/benchmarks/benchmark.ts
 npx ts-node examples/feeds/advanced/runUpdate.ts --feedId FEED_ID
 ```
 
+### Direct execution with yarn tsx:
+```bash
+# Run any script directly
+yarn tsx switchboard-examples/feeds/basic/managedUpdate.ts --feedId 0x04eb27d8bd611858df86977a885c1b2a42bbffeb3050e691e943e2004fdf12cc
+```
+
 ## 📂 Categories
 
 ### 1. Feeds (`/feeds/`)
