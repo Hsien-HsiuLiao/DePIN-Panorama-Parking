@@ -44,9 +44,10 @@ jobs:
           cache-dependency-path: anchor-panorama-parking/yarn.lock
 
       - name: Install Solana CLI
-        uses: solana-labs/setup-solana@v1
-        with:
-          solana-version: 1.18.0
+        run: |
+          sh -c "$(curl -sSfL https://release.solana.com/v1.18.0/install)"
+          echo "$HOME/.local/share/solana/install/active_release/bin" >> $GITHUB_PATH
+          solana --version
 
       - name: Install Anchor CLI
         run: |
