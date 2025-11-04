@@ -31,8 +31,8 @@ jobs:
             ~/.cargo/registry/index/
             ~/.cargo/registry/cache/
             ~/.cargo/git/db/
-            target/
-          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+            anchor-panorama-parking/target/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('anchor-panorama-parking/**/Cargo.lock') }}
           restore-keys: |
             ${{ runner.os }}-cargo-
 
@@ -41,25 +41,30 @@ jobs:
         with:
           node-version: '20'
           cache: 'yarn'
+          cache-dependency-path: anchor-panorama-parking/yarn.lock
 
       - name: Install Solana CLI
-        uses: ivansabik/create-solana-wallet-action@v1
+        uses: solana-labs/setup-solana@v1
         with:
-          solana_version: 1.18.0
-          network: devnet
+          solana-version: 1.18.0
 
       - name: Install Anchor CLI
-        uses: coral-xyz/anchor-action@v0.28.0
-        with:
-          anchor-version: 0.31.0
+        run: |
+          cargo install --git https://github.com/coral-xyz/anchor avm --locked --force
+          avm install 0.31.0
+          avm use 0.31.0
+          echo "$HOME/.avm/bin" >> $GITHUB_PATH
 
       - name: Install dependencies
+        working-directory: anchor-panorama-parking
         run: yarn install --frozen-lockfile
 
       - name: Build Anchor program
+        working-directory: anchor-panorama-parking
         run: anchor build
 
       - name: Run Rust unit tests
+        working-directory: anchor-panorama-parking
         run: cargo test --workspace --no-fail-fast --lib
 
       - name: Start local Solana validator
@@ -87,11 +92,13 @@ jobs:
           solana airdrop 10 $(solana-keygen pubkey ~/.config/solana/id.json) --url http://localhost:8899 || true
 
       - name: Deploy program to local validator
+        working-directory: anchor-panorama-parking
         run: |
           anchor build
           anchor deploy --provider.cluster localnet --provider.wallet ~/.config/solana/id.json
 
       - name: Run TypeScript tests with Anchor
+        working-directory: anchor-panorama-parking
         run: anchor test
         env:
           ANCHOR_PROVIDER_URL: http://localhost:8899
