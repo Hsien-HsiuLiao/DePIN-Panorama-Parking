@@ -45,16 +45,19 @@ jobs:
 
       - name: Install Solana CLI
         run: |
-          sh -c "$(curl -sSfL https://release.solana.com/v1.18.0/install)"
+          sh -c "$(curl -sSfL https://release.anza.xyz/stable/install)"
+          export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"
           echo "$HOME/.local/share/solana/install/active_release/bin" >> $GITHUB_PATH
           solana --version
 
-      - name: Install Anchor CLI
+      - name: Install Anchor CLI (AVM)
         run: |
-          cargo install --git https://github.com/coral-xyz/anchor avm --locked --force
+          cargo install --git https://github.com/solana-foundation/anchor avm --force
           avm install 0.31.0
           avm use 0.31.0
+          export PATH="$HOME/.avm/bin:$PATH"
           echo "$HOME/.avm/bin" >> $GITHUB_PATH
+          anchor --version
 
       - name: Install dependencies
         working-directory: anchor-panorama-parking
