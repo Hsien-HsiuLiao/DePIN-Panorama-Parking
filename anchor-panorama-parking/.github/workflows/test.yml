@@ -1,0 +1,107 @@
+name: Tests
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          components: rustfmt, clippy
+          override: true
+
+      - name: Cache Rust dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            target/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'yarn'
+
+      - name: Install Solana CLI
+        uses: ivansabik/create-solana-wallet-action@v1
+        with:
+          solana_version: 1.18.0
+          network: devnet
+
+      - name: Install Anchor CLI
+        uses: coral-xyz/anchor-action@v0.28.0
+        with:
+          anchor-version: 0.31.0
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Build Anchor program
+        run: anchor build
+
+      - name: Run Rust unit tests
+        run: cargo test --workspace --no-fail-fast --lib
+
+      - name: Start local Solana validator
+        run: |
+          solana-test-validator --reset --quiet > /tmp/validator.log 2>&1 &
+          echo $! > /tmp/validator.pid
+          sleep 10
+        continue-on-error: true
+
+      - name: Wait for validator to be ready
+        run: |
+          for i in {1..30}; do
+            if solana cluster-version --url http://localhost:8899 > /dev/null 2>&1; then
+              echo "Validator is ready"
+              exit 0
+            fi
+            echo "Waiting for validator... ($i/30)"
+            sleep 2
+          done
+          echo "Validator failed to start"
+          exit 1
+
+      - name: Airdrop SOL to test accounts
+        run: |
+          solana airdrop 10 $(solana-keygen pubkey ~/.config/solana/id.json) --url http://localhost:8899 || true
+
+      - name: Deploy program to local validator
+        run: |
+          anchor build
+          anchor deploy --provider.cluster localnet --provider.wallet ~/.config/solana/id.json
+
+      - name: Run TypeScript tests with Anchor
+        run: anchor test
+        env:
+          ANCHOR_PROVIDER_URL: http://localhost:8899
+          ANCHOR_WALLET: ~/.config/solana/id.json
+
+      - name: Stop validator
+        if: always()
+        run: |
+          if [ -f /tmp/validator.pid ]; then
+            kill $(cat /tmp/validator.pid) || true
+          fi
+          pkill -f solana-test-validator || true
+
